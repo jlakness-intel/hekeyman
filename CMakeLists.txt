@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10.2 FATAL_ERROR)
 
 ## Use -std=c++17 as default.
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 ## Disable C++ extensions
 set(CMAKE_CXX_EXTENSIONS OFF)
 ## Require full C++ standard
@@ -18,7 +18,7 @@ link_libraries(helib ntl)
 
 add_library(hekeyman hekeyman.cpp)
 
-add_executable(test.seed test.seed.cpp)
+add_subdirectory(test)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
