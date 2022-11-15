@@ -2,6 +2,7 @@
 #include <NTL/ZZ.h>
 #include <string>
 #include <iostream>
+#include <random>
 #include <immintrin.h>
 
 using namespace std;
@@ -20,14 +21,13 @@ string JSONFromSeed(Context& ctx, unsigned char seed[32]){
 int main(int argc, char* argv[])
 {
     Context ctx = ContextBuilder<CKKS>().m(256).bits(32).precision(16).c(2).build();
-    array<unsigned long long,4> seed;
-    for(auto& s:seed){
-        int e = _rdrand64_step(&s);
-        assertEq(e,1,"random seed generator error: " + to_string(e));
-    }
+    random_device rd;
+    array<unsigned int,32/sizeof(unsigned int)> seed;
+    for(auto& s:seed) s=rd();
+    
     unsigned char *seed_data = reinterpret_cast<unsigned char *>(seed.data());
     string sks1 = JSONFromSeed(ctx,seed_data);
     string sks2 = JSONFromSeed(ctx,seed_data);
     assertEq(sks1,sks2,"deterministic key generation failed");
-    cout<<sks1<<endl<<sks2<<endl;
+    cout<<endl<<sks1<<endl<<endl<<sks2<<endl;
 }
